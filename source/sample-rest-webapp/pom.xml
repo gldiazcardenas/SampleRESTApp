@@ -25,6 +25,7 @@
 
 	<build>
 		<plugins>
+			<!-- Java Version -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -34,42 +35,23 @@
 				</configuration>
 			</plugin>
 
+			<!-- Spring Boot Jar generation -->
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<archive>
-						<manifest>
-							<addClasspath>false</addClasspath>
-							<mainClass>com.inpowered.sample.Main</mainClass>
-						</manifest>
-					</archive>
+					<fork>true</fork>
+					<mainClass>com.inpowered.sample.Main</mainClass>
 				</configuration>
 				<executions>
 					<execution>
-						<id>make-assembly</id> <!-- this is used for inheritance merges -->
-						<phase>package</phase> <!-- bind to the packaging phase -->
 						<goals>
-							<goal>single</goal>
+							<goal>repackage</goal>
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>false</addClasspath>
-							<mainClass>com.inpowered.sample.Main</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
+			
 		</plugins>
 	</build>
 
