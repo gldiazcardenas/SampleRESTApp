@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
 
-import com.inpowered.sample.view.converter.UserBeanToUserConverter;
+import com.inpowered.sample.view.converter.WebPageToWebPageBeanConverter;
 
 @SpringBootApplication(scanBasePackages = {"com.inpowered.sample"})
 public class Main {
@@ -18,7 +18,7 @@ public class Main {
 	@Bean
 	public ConversionService myConverterService() {
 		DefaultConversionService service = new DefaultConversionService();
-		service.addConverter(new UserBeanToUserConverter());
+		service.addConverter(new WebPageToWebPageBeanConverter());
 		return service;
 	}
 	
