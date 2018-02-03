@@ -1,4 +1,4 @@
-package com.inpowered.sample.view.controller;
+package com.inpowered.sample.business.service.callable;
 
 import java.util.concurrent.Callable;
 

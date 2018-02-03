@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inpowered.sample.business.service.WebPageService;
+import com.inpowered.sample.business.service.callable.AylienWebPageCallable;
+import com.inpowered.sample.business.service.callable.ParseWebPageCallable;
 import com.inpowered.sample.domain.model.WebPage;
 import com.inpowered.sample.view.bean.AylienWebPageResult;
 import com.inpowered.sample.view.bean.ParseWebPageResult;
