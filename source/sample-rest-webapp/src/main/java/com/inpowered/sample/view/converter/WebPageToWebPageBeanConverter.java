@@ -9,8 +9,9 @@ public class WebPageToWebPageBeanConverter implements Converter<WebPage, WebPage
 
 	@Override
 	public WebPageBean convert(WebPage source) {
-		// TODO Auto-generated method stub
-		return null;
+		WebPageBean bean = new WebPageBean();
+		bean.setTitle(source.getTitle());
+		return bean;
 	}
 
 }

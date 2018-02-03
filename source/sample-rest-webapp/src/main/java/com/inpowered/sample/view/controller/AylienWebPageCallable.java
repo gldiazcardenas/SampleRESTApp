@@ -8,8 +8,8 @@ public class AylienWebPageCallable implements Callable<AylienWebPageResult> {
 
 	@Override
 	public AylienWebPageResult call() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		AylienWebPageResult result = new AylienWebPageResult();
+		return result;
 	}
 
 }

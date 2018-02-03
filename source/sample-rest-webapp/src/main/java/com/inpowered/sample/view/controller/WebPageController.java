@@ -1,7 +1,6 @@
 package com.inpowered.sample.view.controller;
 
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +20,8 @@ import com.inpowered.sample.business.service.WebPageService;
 import com.inpowered.sample.domain.model.WebPage;
 import com.inpowered.sample.view.bean.AylienWebPageResult;
 import com.inpowered.sample.view.bean.ParseWebPageResult;
-import com.inpowered.sample.view.bean.WebPageCollectBean;
 import com.inpowered.sample.view.bean.WebPageBean;
+import com.inpowered.sample.view.bean.WebPageCollectBean;
 
 @RestController
 public class WebPageController {
@@ -30,7 +30,7 @@ public class WebPageController {
 	private WebPageService service;
 	
 	@Autowired
-	private ExecutorService executor;
+	private ThreadPoolTaskExecutor taskExecutor;
 	
 	@Autowired
 	@Qualifier("myConverterService")
@@ -42,8 +42,8 @@ public class WebPageController {
 		ParseWebPageCallable parserCallable = new ParseWebPageCallable(collectBean.getUrl());
 		AylienWebPageCallable aylienCallable = new AylienWebPageCallable();
 		
-		Future<ParseWebPageResult> parseFuture = executor.submit(parserCallable);
-		Future<AylienWebPageResult> aylieanFuture = executor.submit(aylienCallable);
+		Future<ParseWebPageResult> parseFuture = taskExecutor.submit(parserCallable);
+		Future<AylienWebPageResult> aylieanFuture = taskExecutor.submit(aylienCallable);
 		
 		WebPageBean result = null;
 		
