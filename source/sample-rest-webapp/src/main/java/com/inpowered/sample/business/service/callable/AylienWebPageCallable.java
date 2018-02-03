@@ -15,8 +15,8 @@ public class AylienWebPageCallable implements Callable<AylienWebPageResult> {
 	public AylienWebPageResult call() throws Exception {
 		//ResponseObj response = restTemplate.getForObject(aylienWSURL, ResponseObj.class);
 		AylienWebPageResult result = new AylienWebPageResult();
-		result.setPolarity("Polarity 123");
-		result.setSubjectivity("Subjectivity Text");
+		result.setPolarity("Fixed Polarity 123");
+		result.setSubjectivity("Fixed Subjectivity Text");
 		result.setPolarityConfidence(0.555555);
 		result.setSubjectivityConfidence(0.9999);
 		return result;
