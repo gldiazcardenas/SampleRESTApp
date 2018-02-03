@@ -3,6 +3,8 @@ package com.inpowered.sample.view.controller;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
@@ -26,6 +28,8 @@ import com.inpowered.sample.view.bean.WebPageCollectBean;
 @RestController
 public class WebPageController {
 	
+	private static final Log LOG = LogFactory.getLog(WebPageController.class);
+	
 	@Autowired
 	private WebPageService service;
 	
@@ -39,34 +43,40 @@ public class WebPageController {
 	@PostMapping(path = "/collect", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public WebPageBean collect (@RequestBody WebPageCollectBean collectBean) {
-		ParseWebPageCallable parserCallable = new ParseWebPageCallable(collectBean.getUrl());
-		AylienWebPageCallable aylienCallable = new AylienWebPageCallable();
-		
-		Future<ParseWebPageResult> parseFuture = taskExecutor.submit(parserCallable);
-		Future<AylienWebPageResult> aylieanFuture = taskExecutor.submit(aylienCallable);
-		
 		WebPageBean result = null;
 		
-		try {
-			ParseWebPageResult parseResult = parseFuture.get();
-			AylienWebPageResult aylienResult = aylieanFuture.get();
+		if (collectBean != null && collectBean.getUrl() != null) {
+			ParseWebPageCallable parserCallable = new ParseWebPageCallable(collectBean.getUrl());
+			AylienWebPageCallable aylienCallable = new AylienWebPageCallable();
 			
-			WebPage webPage = new WebPage();
-			webPage.setUrl(collectBean.getUrl());
-			webPage.setTitle(parseResult.getTitle());
-			webPage.setAuthor(parseResult.getAuthor());
-			webPage.setDescription(parseResult.getDescription());
-			webPage.setPolarity(aylienResult.getPolarity());
-			webPage.setSubjectivity(aylienResult.getSubjectivity());
-			webPage.setPolarityConfidence(aylienResult.getPolarityConfidence());
-			webPage.setSubjectivityConfidence(aylienResult.getSubjectivityConfidence());
+			Future<ParseWebPageResult> parseFuture = taskExecutor.submit(parserCallable);
+			Future<AylienWebPageResult> aylieanFuture = taskExecutor.submit(aylienCallable);
 			
-			service.save(webPage);
-			
-			result = converterService.convert(webPage, WebPageBean.class);
-		}
-		catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
+			try {
+				ParseWebPageResult parseResult = parseFuture.get();
+				AylienWebPageResult aylienResult = aylieanFuture.get();
+				
+				WebPage webPage = service.findByUrl(collectBean.getUrl());
+				if (webPage == null) {
+					webPage = new WebPage();
+				}
+				
+				webPage.setUrl(collectBean.getUrl());
+				webPage.setTitle(parseResult.getTitle());
+				webPage.setAuthor(parseResult.getAuthor());
+				webPage.setDescription(parseResult.getDescription());
+				webPage.setPolarity(aylienResult.getPolarity());
+				webPage.setSubjectivity(aylienResult.getSubjectivity());
+				webPage.setPolarityConfidence(aylienResult.getPolarityConfidence());
+				webPage.setSubjectivityConfidence(aylienResult.getSubjectivityConfidence());
+				
+				service.save(webPage);
+				
+				result = converterService.convert(webPage, WebPageBean.class);
+			}
+			catch (InterruptedException | ExecutionException e) {
+				LOG.error(e.getMessage(), e);
+			}
 		}
 		
 		return result;

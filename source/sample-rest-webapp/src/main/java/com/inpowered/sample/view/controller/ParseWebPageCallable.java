@@ -21,6 +21,8 @@ public class ParseWebPageCallable implements Callable<ParseWebPageResult> {
 		
 		ParseWebPageResult result = new ParseWebPageResult();
 		result.setTitle(doc.title());
+		result.setDescription("Fixed Description");
+		result.setAuthor("Fixed Author");
 		
 		return result;
 	}

@@ -17,6 +17,8 @@ public class AylienWebPageCallable implements Callable<AylienWebPageResult> {
 		AylienWebPageResult result = new AylienWebPageResult();
 		result.setPolarity("Polarity 123");
 		result.setSubjectivity("Subjectivity Text");
+		result.setPolarityConfidence(0.555555);
+		result.setSubjectivityConfidence(0.9999);
 		return result;
 	}
 
