@@ -2,10 +2,12 @@ package com.inpowered.sample;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.client.RestTemplate;
 
 import com.inpowered.sample.view.converter.WebPageToWebPageBeanConverter;
 
@@ -30,6 +32,11 @@ public class Main {
 		pool.setMaxPoolSize(10);
 		pool.setWaitForTasksToCompleteOnShutdown(true);
 		return pool;
+	}
+	
+	@Bean
+	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+		return builder.build();
 	}
 	
 }

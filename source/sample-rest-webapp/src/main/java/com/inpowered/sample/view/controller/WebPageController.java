@@ -54,7 +54,12 @@ public class WebPageController {
 			WebPage webPage = new WebPage();
 			webPage.setUrl(collectBean.getUrl());
 			webPage.setTitle(parseResult.getTitle());
+			webPage.setAuthor(parseResult.getAuthor());
+			webPage.setDescription(parseResult.getDescription());
 			webPage.setPolarity(aylienResult.getPolarity());
+			webPage.setSubjectivity(aylienResult.getSubjectivity());
+			webPage.setPolarityConfidence(aylienResult.getPolarityConfidence());
+			webPage.setSubjectivityConfidence(aylienResult.getSubjectivityConfidence());
 			
 			service.save(webPage);
 			
